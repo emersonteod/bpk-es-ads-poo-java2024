@@ -1,0 +1,62 @@
+@startuml
+'title: Diagrama UML para Software com Foto e Gerenciamento de Roteiros
+
+class Software {
+  - nome : String
+  - versao : String
+  - idSoftware : int
+  + acessar(trader : Trader) : boolean
+  + cadastrarPromotor(promotor : Promotor) : void
+  + cadastrarRoteiro(roteiro : Roteiro) : void
+  + indicarProximoMercado(promotor : Promotor) : GrandeMercado
+}
+
+class Trader {
+  - nome : String
+  - idTrader : int
+  - regiaoAtuacao : String
+  + promotores : List<Promotor>
+}
+
+class Promotor {
+  - nome : String
+  - idPromotor : int
+  + mercados : List<GrandeMercado>
+  + produtos : List<Produto>
+  + roteiros : List<Roteiro>
+  + enviarFoto(foto : String, mercado : GrandeMercado) : void
+  + sinalizarAbastecimento(mercado : GrandeMercado) : void
+}
+
+class Roteiro {
+  - idRoteiro : int
+  - descricao : String
+  - dataExecucao : Date
+  + mercados : List<GrandeMercado>
+}
+
+class GrandeMercado {
+  - nome : String
+  - idMercado : int
+  - endereco : String
+}
+
+class Produto {
+  - nome : String
+  - idProduto : int
+  - categoria : String
+}
+
+Software --> Trader : gerencia acesso
+Software --> Roteiro : cadastra
+Software --> Promotor : cadastra
+Software --> GrandeMercado : gerencia próximo
+Trader "1" --> "*" Promotor : coordena
+Promotor "1" --> "*" Roteiro : segue
+Promotor "1" --> "*" GrandeMercado : atua em
+Promotor "1" --> "*" Produto : abastece
+Promotor --> GrandeMercado : sinaliza
+Promotor --> GrandeMercado : envia foto
+Roteiro "1" --> "*" GrandeMercado : inclui
+
+@enduml
